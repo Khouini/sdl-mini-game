@@ -13,6 +13,11 @@ typedef struct {
     int direction;
     int score;
     int vies;
+    
+    // Jumping-specific attributes
+    int isJumping;
+    float jumpStartY;
+    float jumpTime;
 } Personne;
 
 void initPerso(Personne *p);
@@ -20,5 +25,6 @@ void afficherPerso(Personne p, SDL_Surface *screen);
 void movePerso(Personne *p);
 void animerPerso(Personne *p);
 void saut(Personne *p, int sinusoidal);
+void startJump(Personne *p);
 
 #endif

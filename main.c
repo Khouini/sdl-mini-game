@@ -21,6 +21,7 @@ typedef struct {
     int running;
     int isJumping;
     int groundLevel;
+
 } GameState;
 
 // Function prototypes
@@ -77,10 +78,7 @@ void handleEvents(GameState *game) {
                     game->perso.accelX = MOVE_SPEED;
                     break;
                 case SDLK_SPACE:
-                    if (!game->isJumping) {
-                        game->perso.vitesseY = -JUMP_STRENGTH;
-                        game->isJumping = 1;
-                    }
+                    startJump(&game->perso);
                     break;
                 case SDLK_ESCAPE:
                     game->running = 0;
@@ -113,17 +111,13 @@ void updateGameLogic(GameState *game) {
     // Apply friction
     game->perso.vitesseX *= FRICTION;
     
-    // Apply gravity
-    game->perso.vitesseY += GRAVITY;
-    
-    // Move character
+    // Move character (includes jump physics)
     movePerso(&game->perso);
     
-    // Ground collision and jumping
+    // Ground collision
     if (game->perso.position.y >= game->groundLevel) {
         game->perso.position.y = game->groundLevel;
-        game->perso.vitesseY = 0;
-        game->isJumping = 0;
+        game->perso.isJumping = 0;
     }
     
     // Controlled background scrolling
@@ -145,6 +139,7 @@ void updateGameLogic(GameState *game) {
     animerPerso(&game->perso);
     animerMiniMap(&game->map);
 }
+
 
 void render(GameState *game) {
     // Clear screen
