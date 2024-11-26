@@ -38,11 +38,20 @@ int initSDL(GameState *game) {
         return 0;
     }
 
+    // Initialize SDL_mixer
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        fprintf(stderr, "SDL_mixer initialization failed: %s\n", Mix_GetError());
+        SDL_Quit();
+        return 0;
+    }
+
     // Create screen surface
     game->screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, 
                                     SDL_HWSURFACE | SDL_DOUBLEBUF);
     if (!game->screen) {
         fprintf(stderr, "Screen creation failed: %s\n", SDL_GetError());
+        Mix_CloseAudio();
+        SDL_Quit();
         return 0;
     }
 
@@ -152,7 +161,14 @@ void render(GameState *game) {
 }
 
 void cleanupSDL(GameState *game) {
-    // Free surfaces and resources
+    // Stop and free music
+    Mix_HaltMusic();
+    Mix_FreeMusic(game->back.musique);
+
+    // Close audio
+    Mix_CloseAudio();
+
+    // Quit SDL
     SDL_Quit();
 }
 
