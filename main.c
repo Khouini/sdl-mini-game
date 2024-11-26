@@ -5,12 +5,16 @@
 // Movement constants
 #define MOVE_SPEED 2
 #define SCROLL_SPEED 1
-#define MAX_VELOCITY 3
+#define MAX_VELOCITY 6  // Increased to allow for accelerated movement
 #define FRICTION 0.6
 #define GRAVITY 0.5
 #define JUMP_STRENGTH 8
 #define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 600
+#define NORMAL_MOVE_SPEED 2
+#define ACCELERATED_MOVE_SPEED 5
+#define ACCELERATE_KEY SDLK_LSHIFT  // Use 'A' key for acceleration
+
 
 // Game state structure
 typedef struct {
@@ -79,12 +83,19 @@ void handleEvents(GameState *game) {
         
         // Keyboard input handling
         if (event.type == SDL_KEYDOWN) {
+            // Get the current state of all keys
+            Uint8 *keystate = SDL_GetKeyState(NULL);
+            
+            // Determine move speed based on acceleration key
+            int moveSpeed = keystate[ACCELERATE_KEY] ? 
+                            ACCELERATED_MOVE_SPEED : NORMAL_MOVE_SPEED;
+
             switch (event.key.keysym.sym) {
                 case SDLK_LEFT:
-                    game->perso.accelX = -MOVE_SPEED;
+                    game->perso.accelX = -moveSpeed;
                     break;
                 case SDLK_RIGHT:
-                    game->perso.accelX = MOVE_SPEED;
+                    game->perso.accelX = moveSpeed;
                     break;
                 case SDLK_SPACE:
                     startJump(&game->perso);
