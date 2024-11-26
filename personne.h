@@ -5,14 +5,23 @@
 #include <SDL/SDL_image.h>
 #include <math.h>
 
+#define SPRITE_WIDTH 130
+#define SPRITE_HEIGHT 130
+#define SPRITE_COLUMNS 4
+
 typedef struct {
-    SDL_Surface *image[4];
+    SDL_Surface *spriteSheet;  // Single sprite sheet
     SDL_Rect position;
+    SDL_Rect currentClip;      // Current sprite clip
     int vitesseX, vitesseY;
     int accelX, accelY;
     int direction;
     int score;
     int vies;
+    
+    // Animation variables
+    int currentFrame;
+    int frameCounter;
     
     // Jumping-specific attributes
     int isJumping;
