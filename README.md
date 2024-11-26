@@ -14,13 +14,6 @@ sudo apt-get upgrade
 sudo apt-get install libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libpulse-dev libxt-dev
 ```
 
-## Project Structure
-- `main.c`: Game main loop and core logic
-- `personne.c`: Character management and physics
-- `background.c`: Background and scrolling mechanics
-- `minimap.c`: Minimap rendering
-- `assets/`: Directory for game resources
-
 ## Compilation
 ```bash
 gcc -o jeu main.c personne.c background.c minimap.c -lSDL -lSDL_image -lSDL_mixer -lm
@@ -37,6 +30,14 @@ gcc -o jeu main.c personne.c background.c minimap.c -lSDL -lSDL_image -lSDL_mixe
 - **Space**: Jump
 - **A Key**: Accelerate Movement
 - **ESC**: Exit Game
+
+## Project Structure
+- `main.c`: Game main loop and core logic
+- `personne.c`: Character management and physics
+- `background.c`: Background and scrolling mechanics
+- `minimap.c`: Minimap rendering
+- `assets/`: Directory for game resources
+
 
 ## Asset Requirements
 Prepare the following assets in the `assets/` directory:
