@@ -18,6 +18,12 @@ void afficherMiniMap(MiniMap m, SDL_Surface *screen) {
     SDL_FillRect(screen, &persoRect, SDL_MapRGB(screen->format, 255, 0, 0));
 }
 
-void animerMiniMap(MiniMap *m) {
-    m->persoPosition.x += 1;
+void animerMiniMap(MiniMap *m, Personne *perso) {
+    // Assuming you want to scale down the character's position to fit the minimap
+    // You might need to adjust these scaling factors based on your specific map and screen sizes
+    float scaleX = 0.1;  // Example scaling factor
+    float scaleY = 0.1;  // Example scaling factor
+    
+    m->persoPosition.x = m->position.x + (perso->position.x * scaleX);
+    m->persoPosition.y = m->position.y + (perso->position.y * scaleY);
 }

@@ -137,7 +137,7 @@ void updateGameLogic(GameState *game) {
     
     // Animation
     animerPerso(&game->perso);
-    animerMiniMap(&game->map);
+    animerMiniMap(&game->map, &game->perso);
 }
 
 

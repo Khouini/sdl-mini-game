@@ -4,6 +4,8 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
+#include "personne.h"  // Add this include to define the Personne type
+
 typedef struct {
     SDL_Surface *image;
     SDL_Rect position;
@@ -12,6 +14,6 @@ typedef struct {
 
 void initMap(MiniMap *m);
 void afficherMiniMap(MiniMap m, SDL_Surface *screen);
-void animerMiniMap(MiniMap *m);
+void animerMiniMap(MiniMap *m, Personne *perso);
 
 #endif
