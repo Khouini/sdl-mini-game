@@ -28,7 +28,7 @@ gcc -o jeu main.c personne.c background.c minimap.c -lSDL -lSDL_image -lSDL_mixe
 - **Left Arrow**: Move Left
 - **Right Arrow**: Move Right
 - **Space**: Jump
-- **A Key**: Accelerate Movement
+- **Shift Key**: Accelerate Movement
 - **ESC**: Exit Game
 
 ## Project Structure
