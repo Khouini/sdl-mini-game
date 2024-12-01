@@ -95,10 +95,12 @@ void handleEvents(GameState *game) {
                 case SDLK_LEFT:
                     game->perso.accelX = -moveSpeed;
                     game->perso.direction = -1;  // Face left
+                    game->perso.isMoving = 1;    // Set moving flag
                     break;
                 case SDLK_RIGHT:
                     game->perso.accelX = moveSpeed;
                     game->perso.direction = 1;   // Face right
+                    game->perso.isMoving = 1;    // Set moving flag
                     break;
                 case SDLK_SPACE:
                     startJump(&game->perso);
@@ -115,6 +117,7 @@ void handleEvents(GameState *game) {
                 case SDLK_LEFT:
                 case SDLK_RIGHT:
                     game->perso.accelX = 0;
+                    game->perso.isMoving = 0;    // Reset moving flag
                     break;
             }
         }
@@ -156,6 +159,12 @@ void updateGameLogic(GameState *game) {
         
         // Scroll background
         scrolling(&game->back, scrollAmount > 0 ? 1 : 0, SCROLL_SPEED);
+    }
+    
+    if (game->perso.vitesseX == 0) {
+        game->perso.isMoving = 0;
+    } else {
+        game->perso.isMoving = 1;
     }
     
     // Animation

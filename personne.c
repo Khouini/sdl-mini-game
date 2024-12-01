@@ -5,13 +5,20 @@
 #define JUMP_HEIGHT 100  // Maximum jump height
 #define JUMP_DURATION 0.5  // Jump duration in seconds
 #define GRAVITY 9.8  // Standard gravity
+#define SPRITE_WIDTH 130
+#define SPRITE_HEIGHT 130
+#define SPRITE_COLUMNS 4
+#define IDLE_SPRITE_COLUMNS 1  // Changed to 1 frame for idle state
 
 void initPerso(Personne *p) {
-    // Load both sprite sheets
+    // Load sprite sheets
     p->spriteSheetRight = IMG_Load("assets/spritesheet.png");
     p->spriteSheetLeft = IMG_Load("assets/spritesheet_flip.png");
+    p->idleSpriteSheetRight = IMG_Load("assets/idle_spritesheet.png");
+    p->idleSpriteSheetLeft = IMG_Load("assets/idle_spritesheet_flip.png");
     
-    if (!p->spriteSheetRight || !p->spriteSheetLeft) {
+    if (!p->spriteSheetRight || !p->spriteSheetLeft || 
+        !p->idleSpriteSheetRight || !p->idleSpriteSheetLeft) {
         printf("Failed to load character sprite sheets: %s\n", IMG_GetError());
         exit(1);
     }
@@ -40,6 +47,7 @@ void initPerso(Personne *p) {
     // Animation initialization
     p->currentFrame = 0;
     p->frameCounter = 0;
+    p->isMoving = 0;  // Start in idle state
     
     // Jump initialization
     p->isJumping = 0;
@@ -48,9 +56,21 @@ void initPerso(Personne *p) {
 }
 
 void afficherPerso(Personne p, SDL_Surface *screen) {
-    // Select sprite sheet based on direction
-    SDL_Surface *currentSpriteSheet = (p.direction > 0) ? 
-        p.spriteSheetRight : p.spriteSheetLeft;
+    SDL_Surface *currentSpriteSheet;
+    int currentColumns;
+    
+    // Select sprite sheet based on movement and direction
+    if (p.isMoving) {
+        // Moving sprite sheet
+        currentSpriteSheet = (p.direction > 0) ? 
+            p.spriteSheetRight : p.spriteSheetLeft;
+        currentColumns = SPRITE_COLUMNS;
+    } else {
+        // Idle sprite sheet
+        currentSpriteSheet = (p.direction > 0) ? 
+            p.idleSpriteSheetRight : p.idleSpriteSheetLeft;
+        currentColumns = IDLE_SPRITE_COLUMNS;
+    }
     
     SDL_BlitSurface(currentSpriteSheet, &p.currentClip, screen, &p.position);
 }
@@ -59,13 +79,17 @@ void animerPerso(Personne *p) {
     // Increment frame counter
     p->frameCounter++;
 
-    // Change sprite every 10 game frames
-    if (p->frameCounter >= 10) {
+    // Determine frame change interval based on movement state
+    int frameInterval = p->isMoving ? 10 : 0;  // No animation for idle state
+    int maxColumns = p->isMoving ? SPRITE_COLUMNS : IDLE_SPRITE_COLUMNS;
+
+    // Change sprite every set number of frames
+    if (p->frameCounter >= frameInterval) {
         // Reset counter
         p->frameCounter = 0;
 
-        // Move to next frame (0-3)
-        p->currentFrame = (p->currentFrame + 1) % SPRITE_COLUMNS;
+        // Move to next frame
+        p->currentFrame = (p->currentFrame + 1) % maxColumns;
 
         // Update clip rectangle
         p->currentClip.x = p->currentFrame * SPRITE_WIDTH;

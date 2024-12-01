@@ -10,9 +10,16 @@
 #define SPRITE_HEIGHT 130
 #define SPRITE_COLUMNS 4
 
+typedef enum {
+    IDLE,
+    MOVING
+} AnimationState;
+
 typedef struct {
     SDL_Surface *spriteSheetRight;  // Sprite sheet for right-facing movement
     SDL_Surface *spriteSheetLeft;   // Sprite sheet for left-facing movement
+    SDL_Surface *idleSpriteSheetRight;  // New idle sprite sheet for right
+    SDL_Surface *idleSpriteSheetLeft;   // New idle sprite sheet for left
     SDL_Rect position;
     SDL_Rect currentClip;      // Current sprite clip
     int vitesseX, vitesseY;
@@ -29,6 +36,9 @@ typedef struct {
     int isJumping;
     float jumpStartY;
     float jumpTime;
+
+    int isMoving;  // Flag to track movement state
+    AnimationState animationState;
 } Personne;
 
 void initPerso(Personne *p);
