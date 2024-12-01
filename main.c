@@ -74,6 +74,7 @@ int initSDL(GameState *game) {
     return 1;
 }
 
+// In the handleEvents function, modify the left/right key handling:
 void handleEvents(GameState *game) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -93,9 +94,11 @@ void handleEvents(GameState *game) {
             switch (event.key.keysym.sym) {
                 case SDLK_LEFT:
                     game->perso.accelX = -moveSpeed;
+                    game->perso.direction = -1;  // Face left
                     break;
                 case SDLK_RIGHT:
                     game->perso.accelX = moveSpeed;
+                    game->perso.direction = 1;   // Face right
                     break;
                 case SDLK_SPACE:
                     startJump(&game->perso);

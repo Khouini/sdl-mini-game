@@ -1,3 +1,4 @@
+// Updated personne.h
 #ifndef PERSONNE_H
 #define PERSONNE_H
 
@@ -10,12 +11,13 @@
 #define SPRITE_COLUMNS 4
 
 typedef struct {
-    SDL_Surface *spriteSheet;  // Single sprite sheet
+    SDL_Surface *spriteSheetRight;  // Sprite sheet for right-facing movement
+    SDL_Surface *spriteSheetLeft;   // Sprite sheet for left-facing movement
     SDL_Rect position;
     SDL_Rect currentClip;      // Current sprite clip
     int vitesseX, vitesseY;
     int accelX, accelY;
-    int direction;
+    int direction;             // 1 for right, -1 for left
     int score;
     int vies;
     

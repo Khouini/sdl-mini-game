@@ -7,10 +7,12 @@
 #define GRAVITY 9.8  // Standard gravity
 
 void initPerso(Personne *p) {
-    // Load the entire sprite sheet
-    p->spriteSheet = IMG_Load("assets/spritesheet.png");
-    if (!p->spriteSheet) {
-        printf("Failed to load character sprite sheet: %s\n", IMG_GetError());
+    // Load both sprite sheets
+    p->spriteSheetRight = IMG_Load("assets/spritesheet.png");
+    p->spriteSheetLeft = IMG_Load("assets/spritesheet_flip.png");
+    
+    if (!p->spriteSheetRight || !p->spriteSheetLeft) {
+        printf("Failed to load character sprite sheets: %s\n", IMG_GetError());
         exit(1);
     }
 
@@ -31,7 +33,7 @@ void initPerso(Personne *p) {
     p->vitesseY = 0;
     p->accelX = 0;
     p->accelY = 0;
-    p->direction = 1;
+    p->direction = 1;  // Start facing right
     p->score = 0;
     p->vies = 3;
     
@@ -46,7 +48,11 @@ void initPerso(Personne *p) {
 }
 
 void afficherPerso(Personne p, SDL_Surface *screen) {
-    SDL_BlitSurface(p.spriteSheet, &p.currentClip, screen, &p.position);
+    // Select sprite sheet based on direction
+    SDL_Surface *currentSpriteSheet = (p.direction > 0) ? 
+        p.spriteSheetRight : p.spriteSheetLeft;
+    
+    SDL_BlitSurface(currentSpriteSheet, &p.currentClip, screen, &p.position);
 }
 
 void animerPerso(Personne *p) {
@@ -68,7 +74,6 @@ void animerPerso(Personne *p) {
         p->currentClip.h = SPRITE_HEIGHT;
     }
 }
-
 
 void movePerso(Personne *p) {
     // Update position based on velocity
